@@ -1,4 +1,18 @@
 
+/*
+
+ To Start Server:
+
+ ssh -i <path to .pem file> ec2-user@ec2-3-132-213-41.us-east-2.compute.amazonaws.com
+ cd ReConnect
+ git pull
+ pm2 start server.js --no-daemon
+ 
+ ^C to quit
+ You can close Terminal and the server (should) still run in the background
+
+*/
+
 // setup firebase somewhere up here
 
 // use database.ref("<ref>").on("value", function(data) {}); to recieve game updates
