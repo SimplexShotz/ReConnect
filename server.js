@@ -47,7 +47,7 @@ const server = http.createServer((req, res) => {
     resSent = update(q, res);
   }
   if (!resSent) {
-    serverLog("Warning", `A user was sent back no data.`);
+//     serverLog("Warning", `A user was sent back no data.`);
     res.end("type=none&message=none");
   }
 });
