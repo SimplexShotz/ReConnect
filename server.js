@@ -6,9 +6,14 @@ const port = 3000;
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
   var url = req.url;
-  if (url.split("?").length > 0) {
-    url = url.substring(2, url.length - 1);
-    console.log(url);
+  if (url.split("?").length > 1) {
+    url = url.substring(2, url.length);
+    url = url.split("&");
+    var q = {};
+    for (var i = 0; i < url.length; i++) {
+      q[url[i].split("=")[0]] = url[i].split("=")[1]];
+    }
+    console.log(q);
   }
   res.setHeader('Content-Type', 'text/plain');
   res.end('Hello World!');
