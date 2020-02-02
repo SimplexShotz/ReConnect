@@ -17,6 +17,8 @@
 
 // use database.ref("<ref>").on("value", function(data) {}); to recieve game updates
 
+var logOutput = "";
+
 var game = {
   users: [
     {
@@ -45,12 +47,13 @@ const server = http.createServer((req, res) => {
     resSent = update(q, res);
   }
   if (!resSent) {
+    serverLog("Warning", `A user was sent back no data.`);
     res.end("type=none&message=none");
   }
 });
 
 server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+  serverLog(`Server running at http://${hostname}:${port}/`);
 });
 
 function update(options, res) {
@@ -58,6 +61,7 @@ function update(options, res) {
     case "createUser":
       for (var i = 0; i < game.users.length; i++) {
         if (game.users[i].name === options.user) {
+          serverLog("Error", `A user attempted to create user "${options.user}", but the username is already taken.`);
           res.end("type=error&message=usernameTaken");
           return true;
         }
@@ -67,11 +71,23 @@ function update(options, res) {
           name: options.user,
           score: (options.score || 0)
         });
+        serverLog("Success", `User "${options.user}" was created.`);
         res.end("type=success&message=userCreated");
         return true;
       }
     break;
+    case "console":
+      if (options.pass === "admin") {
+        serverLog("Warning", `Someone accessed the console at "${new Date().toString()}". If this was not you, check previous logs.`);
+        res.end("type=success&message=" + logOutput);
+        return true;
+      }
+    break;
   }
-  console.log(game);
   return false;
+}
+
+function serverLog(type, message) {
+  logOutput += `\n[${type}]: ${message}`;
+  console.log(`[${type}]: ${message}`);
 }
