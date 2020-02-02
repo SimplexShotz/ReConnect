@@ -14,6 +14,7 @@ const hostname = 'ec2-3-132-213-41.us-east-2.compute.amazonaws.com';
 const port = 3000;
 
 const server = http.createServer((req, res) => {
+  var resSent = false;
   res.statusCode = 200;
   var url = req.url;
   if (url.split("?").length > 1) {
@@ -23,10 +24,11 @@ const server = http.createServer((req, res) => {
     for (var i = 0; i < url.length; i++) {
       q[url[i].split("=")[0]] = url[i].split("=")[1];
     }
-    update(q, res);
+    resSent = update(q, res);
   }
-  res.setHeader('Content-Type', 'text/plain');
-  res.end("type=none&message=none");
+  if (!resSent) {
+    res.end("type=none&message=none");
+  }
 });
 
 server.listen(port, hostname, () => {
@@ -38,9 +40,8 @@ function update(options, res) {
     case "createUser":
       for (var i = 0; i < game.users.length; i++) {
         if (game.users[i].name === options.user) {
-          options.user = false;
-          break;
           res.end("type=error&message=usernameTaken");
+          return true;
         }
       }
       if (options.user) {
@@ -49,8 +50,10 @@ function update(options, res) {
           score: (options.score || 0)
         });
         res.end("type=success&message=userCreated");
+        return true;
       }
     break;
   }
   console.log(game);
+  return false;
 }
