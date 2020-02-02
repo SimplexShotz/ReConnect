@@ -44,4 +44,5 @@ function update(options) {
       }
     break;
   }
+  console.log(game);
 }
