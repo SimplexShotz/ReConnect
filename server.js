@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
     for (var i = 0; i < url.length; i++) {
       q[url[i].split("=")[0]] = url[i].split("=")[1];
     }
-    update(q);
+    update(q, res);
   }
   res.setHeader('Content-Type', 'text/plain');
   res.end("type=none&message=none");
@@ -33,7 +33,7 @@ server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 
-function update(options) {
+function update(options, res) {
   switch(options.command) {
     case "createUser":
       for (var i = 0; i < game.users.length; i++) {
