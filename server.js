@@ -27,7 +27,7 @@ const server = http.createServer((req, res) => {
     resSent = update(q, res);
   }
   if (!resSent) {
-    res.end("type=none&message=none");
+    res.end("type=none&message=none&game=" + JSON.stringify(game));
   }
 });
 
@@ -40,7 +40,7 @@ function update(options, res) {
     case "createUser":
       for (var i = 0; i < game.users.length; i++) {
         if (game.users[i].name === options.user) {
-          res.end("type=error&message=usernameTaken");
+          res.end("type=error&message=usernameTaken&game=" + JSON.stringify(game));
           return true;
         }
       }
@@ -49,7 +49,7 @@ function update(options, res) {
           name: options.user,
           score: (options.score || 0)
         });
-        res.end("type=success&message=userCreated");
+        res.end("type=success&message=userCreated&game=" + JSON.stringify(game));
         return true;
       }
     break;
