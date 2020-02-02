@@ -11,7 +11,7 @@ const server = http.createServer((req, res) => {
     url = url.split("&");
     var q = {};
     for (var i = 0; i < url.length; i++) {
-      q[url[i].split("=")[0]] = url[i].split("=")[1]];
+      q[url[i].split("=")[0]] = url[i].split("=")[1];
     }
     console.log(q);
   }
