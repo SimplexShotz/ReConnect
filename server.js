@@ -1,3 +1,13 @@
+
+var game = {
+  users: [
+    {
+      name: "Josh",
+      score: 0
+    }
+  ]
+};
+
 const http = require('http');
 
 const hostname = 'ec2-3-132-213-41.us-east-2.compute.amazonaws.com';
@@ -13,12 +23,25 @@ const server = http.createServer((req, res) => {
     for (var i = 0; i < url.length; i++) {
       q[url[i].split("=")[0]] = url[i].split("=")[1];
     }
-    console.log(q);
+    update(q);
   }
   res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World!');
+  res.end('');
 });
 
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
+
+function update(options) {
+  switch(options.command) {
+    case "createUser":
+      if (options.user) {
+        game.users.push({
+          name: options.user,
+          score: (options.score || 0)
+        });
+      }
+    break;
+  }
+}
