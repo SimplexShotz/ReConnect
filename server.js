@@ -26,7 +26,7 @@ const server = http.createServer((req, res) => {
     update(q);
   }
   res.setHeader('Content-Type', 'text/plain');
-  res.end('');
+  res.end("type=none&message=none");
 });
 
 server.listen(port, hostname, () => {
@@ -36,11 +36,19 @@ server.listen(port, hostname, () => {
 function update(options) {
   switch(options.command) {
     case "createUser":
+      for (var i = 0; i < game.users.length; i++) {
+        if (game.users[i].name === options.user) {
+          options.user = false;
+          break;
+          res.end("type=error&message=usernameTaken");
+        }
+      }
       if (options.user) {
         game.users.push({
           name: options.user,
           score: (options.score || 0)
         });
+        res.end("type=success&message=userCreated");
       }
     break;
   }
