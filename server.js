@@ -5,7 +5,11 @@ const port = 3000;
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200;
-  console.log(req.url);
+  var url = req.url;
+  if (url.split("?").length > 0) {
+    url = url.substring(2, url.length - 1);
+    console.log(url);
+  }
   res.setHeader('Content-Type', 'text/plain');
   res.end('Hello World!');
 });
