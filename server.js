@@ -1,4 +1,8 @@
 
+// setup firebase somewhere up here
+
+// use database.ref("<ref>").on("value", function(data) {}); to recieve game updates
+
 var game = {
   users: [
     {
