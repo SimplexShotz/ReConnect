@@ -30,8 +30,8 @@ var game = {
 
 const http = require('http');
 
-const hostname = 'ec2-3-132-213-41.us-east-2.compute.amazonaws.com';
-const port = 3000;
+const hostname = 'localhost';
+const port = 8080;
 
 const server = http.createServer((req, res) => {
   var resSent = false;
