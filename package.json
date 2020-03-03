@@ -1,5 +1,10 @@
 {
+  "name": "ss-reconnect",
+  "description": "ReConnect Server",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js"
+  },
+  "dependencies": {
   }
 }
