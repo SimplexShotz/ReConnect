@@ -1,5 +1,83 @@
 
-/*
+const connect = require("connect");
+const http = require("http");
+const firebase = require("firebase");
+
+var firebaseConfig = {
+    apiKey: "AIzaSyBrlQjFfSctA_LV3fgjh-3wi6FqxXDA2xo",
+    authDomain: "ss-reconnect.firebaseapp.com",
+    databaseURL: "https://ss-reconnect.firebaseio.com",
+    projectId: "ss-reconnect",
+    storageBucket: "ss-reconnect.appspot.com",
+    messagingSenderId: "418663478303",
+    appId: "1:418663478303:web:0d3947e8714dd4b10d912a",
+    measurementId: "G-FDYD2WEX7F"
+  };
+firebase.initializeApp(firebaseConfig);
+var database = firebase.database();
+var ref = {
+  logOutput: database.ref("logOutput"),
+  rooms: database.ref("rooms")
+};
+
+
+/* ================================================================================
+  # GAME SETUP
+    = pulls data from firebase and overwrites the "game" variable with the pulled data
+*/
+(function setupGame() {
+  // Setup logOutput
+  ref.logOutput.once("value", function(data) {
+    var d = data.val();
+    if (d) {
+      game.logOutput = d;
+      console.log(game.logOutput);
+    }
+    // Wait until the old logs are loaded, otherwise they will be overridden.
+//     serverLog("Server", `Server running at https://reconnect.simplexshotz.repl.co`);
+  });
+  ref.rooms.remove();
+  // ref.rooms.once("value", function(data) {
+  //   var d = data.val();
+  //   if (d) {
+  //     game.rooms = d;
+  //   }
+  // });
+})();
+
+
+/* ================================================================================
+  # SERVER SETUP
+    = starts the HTTP request server and handles all incoming requests
+*/
+var app = connect();
+app.use(function(req, res) {
+  var resSent = false;
+  res.statusCode = 200;
+  var url = req.url;
+  if (url.split("?").length > 1) {
+    url = url.substring(2, url.length);
+    url = url.split("&");
+    var q = {};
+    for (var i = 0; i < url.length; i++) {
+      // console.log(JSON.parse(decodeURI(url[i].split("=")[1])));
+      q[url[i].split("=")[0]] = JSON.parse(decodeURI(url[i].split("=")[1]));
+    }
+    resSent = false;
+  }
+  ref.logOutput.set("THIS IS A TEST. IF YOU SEE THIS, SOMETHING IS WORKING RIGHT YAY");
+  if (!resSent) {
+    res.end(`type="none"&message="none"`);
+  }
+});
+// create server and listen for requests
+http.createServer(app).listen(8080);
+
+
+
+/* ====================================================================================================================================
+
+ # OLD CODE
 
  To Start Server:
 
@@ -11,7 +89,7 @@
  ^C to quit
  You can close Terminal and the server (should) still run in the background
 
-*/
+*
 
 // setup firebase somewhere up here
 
@@ -99,3 +177,4 @@ function serverLog(type, message) {
   logOutput += `\n[${type}]: ${message}`;
   console.log(`[${type}]: ${message}`);
 }
+*/
