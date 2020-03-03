@@ -30,8 +30,8 @@ var game = {
 
 const http = require('http');
 
-const hostname = 'localhost';
-const port = 8080;
+const hostname = 'ss-reconnect.herokuapp.com';
+const port = 3000;
 
 const server = http.createServer((req, res) => {
   var resSent = false;
