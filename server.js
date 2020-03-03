@@ -71,7 +71,7 @@ app.use(function(req, res) {
   }
 });
 // create server and listen for requests
-http.createServer(app).listen(8080);
+http.createServer(app).listen(process.env.PORT || 8080);
 
 
 
